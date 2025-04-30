@@ -169,7 +169,6 @@ const processGames = async () => {
 };
 
 const fetchFromIGDB = async (query) => {
-  console.log(query, "query");
   const response = await fetch("https://api.igdb.com/v4/games", {
     method: "POST",
     headers: {
@@ -196,14 +195,12 @@ const startProcess = async () => {
 };
 
 const getOrCreateSeason = async (game, headerFromApi) => {
-  console.log(game.category === 7, "gamemememmememem", game?.category);
   let seasonGame;
   try {
     if (game.category === 7) {
       const parentGame = game.parent_game
         ? await findOrCreateParentGame(game.parent_game, headerFromApi)
         : null;
-      console.log("inside category", parentGame);
       const existingSeason = await checkIfGameExists(game.slug);
       if (existingSeason) {
         seasonGame = existingSeason;
@@ -257,10 +254,8 @@ const getParentGameById = async (parentGameId, headerFromApi) => {
     );
     if (response.data && response.data.length > 0) {
       const parentGame = response.data[0];
-      console.log(`Found parent game: ${parentGame.name}`);
       return parentGame; // Return the parent game object
     } else {
-      console.warn(`Parent game with ID ${parentGameId} not found.`);
       return null;
     }
   } catch (error) {
@@ -416,7 +411,6 @@ const handleGameExpansions = async (parsedData, headerFromApi) => {
 };
 
 const updateGameDataWithNewFeilds = async (dataObj, gameId) => {
-  console.log(dataObj, "dataObjecttctctct");
   try {
     const updateData = {
       data: {
