@@ -5,9 +5,9 @@ const { Client } = require("pg");
 require("dotenv").config();
 
 //prod cred:
-// const strapiUrl = process.env.PROD_STRAPI_URL;
+const strapiUrl = process.env.PROD_STRAPI_URL;
 //stage cred:
-const strapiUrl = process.env.STAGE_STRAPI_URL;
+// const strapiUrl = process.env.STAGE_STRAPI_URL;
 
 const TWITCH_AUTH_URL = process.env.TWITCH_AUTH_URL;
 const CHUNK_SIZE = 2;
@@ -17,22 +17,22 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 //production database cred
-// const dbClient = new Client({
-// user: process.env.PROD_DB_USERNAME,
-// host: process.env.PROD_DB_HOST,
-// database: process.env.PROD_DB_NAME,
-// password: process.env.PROD_DB_PASSWORD,
-// port: process.env.PROD_DB_PORT,
-// });
+const dbClient = new Client({
+  user: process.env.PROD_DB_USERNAME,
+  host: process.env.PROD_DB_HOST,
+  database: process.env.PROD_DB_NAME,
+  password: process.env.PROD_DB_PASSWORD,
+  port: process.env.PROD_DB_PORT,
+});
 
 //stage cred
-const dbClient = new Client({
-  user: process.env.DB_USERNAME,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
+// const dbClient = new Client({
+//   user: process.env.DB_USERNAME,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_NAME,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.DB_PORT,
+// });
 let accessToken = null;
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -90,272 +90,6 @@ const processGames = async () => {
 
   while (hasMoreGames) {
     const games = await fetchGames(start.id, CHUNK_SIZE);
-    // const games = [
-    //   {
-    //     id: 5002,
-    //     title: "Arma 3",
-    //     description:
-    //       "Arma 3 presents an expansive military simulation experience that immerses players in a vast sandbox world filled with both realistic and futuristic combat scenarios. Whether engaging in intense battles solo or teaming up with others in thrilling multiplayer encounters, the game offers diverse gameplay that keeps every mission fresh and exciting. At its core, Arma 3 features a robust editor, empowering players to craft their own unique scenarios, campaigns, and map modes to share with the community. The richly detailed environments and strategic depth ensure that every firefight and tactical decision feels consequential. With a dynamic blend of storytelling and player-driven content, Arma 3 remains a standout title for military simulation enthusiasts. Explore the boundaries of creativity and strategy in this unparalleled virtual battlefield.",
-    //     slug: "arma-3",
-    //     rating: "0.00",
-    //     played: "0",
-    //     queued: "0",
-    //     hours_to_complete: "0.00",
-    //     beat: "0",
-    //     created_by_id: null,
-    //     updated_by_id: 4,
-    //     followers: 0,
-    //     critic_rating: null,
-    //     genres: ["Shooter", "Simulator", "Strategy", "Tactical"],
-    //     game_modes: ["Single player", "Multiplayer", "Co-operative"],
-    //     site_url: "https://www.igdb.com/games/arma-3",
-    //     player_perspective: [
-    //       "First person",
-    //       "Third person",
-    //       "Bird view / Isometric",
-    //     ],
-    //     themes: ["Action", "Sandbox", "Open world", "Warfare"],
-    //     franchises: [],
-    //     game_engines: ["Real Virtuality 4"],
-    //     alternative_names: [
-    //       "아르마 3",
-    //       "アルマ 3",
-    //       "ArmA III",
-    //       "Arma 3",
-    //       "ArmA: Armed Assault ",
-    //     ],
-    //     keywords: [
-    //       "modern warfare",
-    //       "helicopter",
-    //       "vehicular combat",
-    //       "surrealism",
-    //       "invasion",
-    //       "military",
-    //       "skydiving",
-    //       "war",
-    //       "steam",
-    //       "special forces",
-    //       "online",
-    //       "steam trading cards",
-    //       "scuba diving",
-    //       "tank",
-    //       "sequel",
-    //       "user generated content",
-    //       "vehicle combat",
-    //       "digital distribution",
-    //       "xbox controller support for pc",
-    //       "platform exclusive",
-    //       "modern military",
-    //       "customization",
-    //       "steam workshop",
-    //       "polygonal 3d",
-    //       "motion blur",
-    //       "wasd movement",
-    //       "retail games with steam activation",
-    //       "sprinting mechanics",
-    //       "sniping",
-    //       "ragdoll physics",
-    //       "downloadable content",
-    //       "useable vehicles",
-    //       "underwater gameplay",
-    //       "fuel management",
-    //       "gamescom 2013",
-    //       "head tracking",
-    //       "mission editor",
-    //       "realism",
-    //       "gamescom 2012",
-    //       "squad tactics",
-    //       "multiplayer lan",
-    //       "voice chat",
-    //       "squad based shooter",
-    //       "weapon modification",
-    //       "dedicated servers",
-    //       "air strike",
-    //       "text dialogue",
-    //       "e3 2012",
-    //       "movement penalty",
-    //       "real time game clock",
-    //       "world war iii",
-    //       "realistic ballistics",
-    //       "military jargon",
-    //       "anti-cheat system",
-    //       "acronym titles",
-    //       "e3 2005",
-    //     ],
-    //     language_supports: [
-    //       "Czech",
-    //       "Italian",
-    //       "French",
-    //       "Russian",
-    //       "English",
-    //       "Chinese (Simplified)",
-    //       "Chinese (Traditional)",
-    //       "German",
-    //       "Portuguese (Brazil)",
-    //       "Korean",
-    //       "Japanese",
-    //       "Turkish",
-    //       "Polish",
-    //       "Spanish (Spain)",
-    //     ],
-    //     external_games: ["Arma 3", "ArmA III", "Arma 3"],
-    //     involved_companies: [],
-    //     collections: ["ArmA"],
-    //     platforms: ["Linux", "PC (Microsoft Windows)", "Mac"],
-    //     website_links: [
-    //       { url: "http://www.arma3.com", category: "official" },
-    //       {
-    //         url: "http://armedassault.wikia.com/wiki/ARMA_3",
-    //         category: "wikia",
-    //       },
-    //       {
-    //         url: "https://www.youtube.com/user/Arma3official",
-    //         category: "youtube",
-    //       },
-    //       {
-    //         url: "https://store.steampowered.com/app/107410",
-    //         category: "steam",
-    //       },
-    //       {
-    //         url: "https://en.wikipedia.org/wiki/ARMA_3",
-    //         category: "wikipedia",
-    //       },
-    //       {
-    //         url: "https://www.facebook.com/armaplatform",
-    //         category: "facebook",
-    //       },
-    //       {
-    //         url: "https://www.twitter.com/armaplatform",
-    //         category: "twitter",
-    //       },
-    //       {
-    //         url: "https://www.twitch.tv/directory/game/Arma%203",
-    //         category: "twitch",
-    //       },
-    //       { url: "https://www.reddit.com/r/arma3/", category: "reddit" },
-    //     ],
-    //     videos: [
-    //       {
-    //         url: "og-MkfnOZmE",
-    //         name: "Bootcamp update Trailer",
-    //         title: "ArmA III - Bootcamp update Trailer (Official)",
-    //       },
-    //       {
-    //         url: "1VcfRVTIRwU",
-    //         name: "Launch Trailer",
-    //         title: "ArmA III - Launch Trailer (Official)",
-    //       },
-    //       {
-    //         url: "VRp_1UWWFv0",
-    //         name: "Ground vehicle Trailer",
-    //         title: "Arma 3 - Community Guide: Ground Vehicle Crew",
-    //       },
-    //     ],
-    //     user_ratings: null,
-    //     critic_ratings: null,
-    //     want_to_play: null,
-    //     playing_users: null,
-    //     played_users: null,
-    //     aggregate_rating: 72.8,
-    //     series: "",
-    //     is_spin_off: "",
-    //     is_season: null,
-    //     is_expansion: null,
-    //     is_updated_from_script: true,
-    //     total_hot_score: "0.00",
-    //     editorial_anticipated_release: null,
-    //     game_category: null,
-    //     average_rating: null,
-    //   },
-    //   {
-    //     id: 30304,
-    //     title: "Apex Legends: Season 1",
-    //     description:
-    //       "Prepare for an exhilarating battle where survival is the ultimate goal. In Apex Legends: Season 1, you'll find yourself in a dynamic arena filled with unique characters, each equipped with extraordinary abilities that can turn the tide of combat. Engage in intense team-based gameplay, strategizing with your squad to outsmart and outmaneuver your foes. The Wild Frontier offers a vibrant landscape, rich with hidden secrets and tactical opportunities just waiting to be discovered. As legends clash, forge your legend in a relentless pursuit of glory. It's time to prove your mettle in this fast-paced and unpredictable world.",
-    //     slug: "apex-legends-season-1",
-    //     rating: "5.00",
-    //     played: "0",
-    //     queued: "0",
-    //     hours_to_complete: "0.00",
-    //     beat: "0",
-    //     created_by_id: null,
-    //     updated_by_id: null,
-    //     followers: 0,
-    //     critic_rating: null,
-    //     genres: ["Shooter"],
-    //     game_modes: ["Battle Royale"],
-    //     site_url: "https://www.igdb.com/games/apex-legends-season-1",
-    //     player_perspective: ["First person"],
-    //     themes: ["Action", "Science fiction"],
-    //     franchises: [],
-    //     game_engines: [],
-    //     alternative_names: ["Apex Legends: Season 1 - Wild Frontier"],
-    //     keywords: ["free-to-play"],
-    //     language_supports: [],
-    //     external_games: [],
-    //     involved_companies: [],
-    //     collections: [],
-    //     platforms: ["PC (Microsoft Windows)", "PlayStation 4", "Xbox One"],
-    //     website_links: [
-    //       {
-    //         url: "https://www.ea.com/games/apex-legends/season-1",
-    //         category: "official",
-    //       },
-    //       {
-    //         url: "https://titanfall.fandom.com/wiki/Apex_Legends",
-    //         category: "wikia",
-    //       },
-    //       {
-    //         url: "https://en.wikipedia.org/wiki/Apex_Legends",
-    //         category: "wikipedia",
-    //       },
-    //       { url: "https://www.facebook.com/playapex", category: "facebook" },
-    //       { url: "https://twitter.com/PlayApex", category: "twitter" },
-    //       { url: "https://www.twitch.tv/playapex", category: "twitch" },
-    //       {
-    //         url: "https://www.instagram.com/playapex",
-    //         category: "instagram",
-    //       },
-    //       {
-    //         url: "https://www.youtube.com/channel/UC0ZV6M2THA81QT9hrVWJG3A",
-    //         category: "youtube",
-    //       },
-    //       { url: "https://www.reddit.com/r/apexlegends", category: "reddit" },
-    //     ],
-    //     videos: [
-    //       {
-    //         url: "7M4Vds3fI9E",
-    //         name: "Trailer",
-    //         title: "Apex Legends Season 1 – Wild Frontier Trailer",
-    //       },
-    //       {
-    //         url: "aOdTqvcEaZ8",
-    //         name: "Trailer",
-    //         title: "Meet Octane – Apex Legends Character Trailer",
-    //       },
-    //       {
-    //         url: "mrvIaAYZYVw",
-    //         name: "Trailer",
-    //         title: "Apex Legends Season 1 Battle Pass Trailer",
-    //       },
-    //     ],
-    //     user_ratings: null,
-    //     critic_ratings: null,
-    //     want_to_play: null,
-    //     playing_users: null,
-    //     played_users: null,
-    //     aggregate_rating: null,
-    //     series: "",
-    //     is_spin_off: "",
-    //     is_season: "",
-    //     is_expansion: null,
-    //     is_updated_from_script: true,
-    //     total_hot_score: "0.00",
-    //     editorial_anticipated_release: null,
-    //     game_category: null,
-    //     average_rating: null,
-    //   },
-    // ];
     if (games.length === 0) {
       console.log("No more games to process. Exiting...");
       hasMoreGames = false;
