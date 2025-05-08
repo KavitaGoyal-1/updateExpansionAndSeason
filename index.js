@@ -10,7 +10,7 @@ const strapiUrl = process.env.PROD_STRAPI_URL;
 // const strapiUrl = process.env.STAGE_STRAPI_URL;
 
 const TWITCH_AUTH_URL = process.env.TWITCH_AUTH_URL;
-const CHUNK_SIZE = 2;
+// const CHUNK_SIZE = 2;
 const CHECKPOINT_FILE = path.resolve(__dirname, "checkpointProd.json");
 const UPDATED_GAMES_FILE = path.resolve(__dirname, "updatedGamesSeasions.json");
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -84,12 +84,16 @@ const updateGame = async (gameId, updatedData) => {
   await updateGameDataWithNewFeilds(objData, gameId);
 };
 
+
 const processGames = async () => {
+  let offset = 0;
+const CHUNK_SIZE = 20;
+let hasMoreGames = true;
   const start = loadCheckpoint();
-  let hasMoreGames = true;
+  // let hasMoreGames = true;
 
   while (hasMoreGames) {
-    const games = await fetchGames(start.id, CHUNK_SIZE);
+    const games = await fetchGames(offset, CHUNK_SIZE);
     if (games.length === 0) {
       console.log("No more games to process. Exiting...");
       hasMoreGames = false;
@@ -164,6 +168,7 @@ const processGames = async () => {
     start.id = lastProcessedGame.id + 1;
 
     // Add a delay to avoid rate-limiting issues
+    offset += CHUNK_SIZE;
     await delay(1000);
   }
 };
